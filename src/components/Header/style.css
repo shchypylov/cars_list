@@ -1,0 +1,8 @@
+.header-logo {
+  width: 138px;
+}
+
+.header-logo__image {
+  display: block;
+  width: 100%;
+}
