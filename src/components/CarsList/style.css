@@ -1,12 +1,12 @@
-.vehicle-item__image {
+.car-item__image {
   display: block;
   width: 100px;
 }
 
-.vehicle-item__title {
+.car-item__title {
   font-weight: bold;
 }
 
-.vehicle-item__info {
+.car-item__info {
   flex-direction: column;
 }

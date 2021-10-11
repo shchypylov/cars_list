@@ -1,19 +1,21 @@
-import {Col, Container, Row} from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 
-import VehicleFilters from "../../components/VehicleFilters";
-import VehiclesList from "../../components/VehiclesList";
+import CarFilters from "../../components/CarFilters";
+import CarsList from "../../components/CarsList";
 
 const Home = () => {
-    return (
-        <Container>
-            <Row>
-                <Col xs={3}>
-                    <VehicleFilters />
-                </Col>
-                <Col><VehiclesList /></Col>
-            </Row>
-        </Container>
-    );
+  return (
+    <Container>
+      <Row>
+        <Col xs={3}>
+          <CarFilters />
+        </Col>
+        <Col>
+          <CarsList />
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 
 export default Home;
