@@ -14,6 +14,7 @@ import "./style.css";
 
 const Car = () => {
   const { id } = useParams();
+
   const [isLoading, setIsLoading] = useState();
   const [isCarFavourite, setIsCarFavorite] = useState(false);
   const [car, setCar] = useState(null);
@@ -86,9 +87,7 @@ const Car = () => {
         />
         <Card.Body className="d-flex px-5 m-auto vehicle__info">
           <div className="pe-4">
-            <Card.Title>
-              {car.manufacturerName} {car.modelName}
-            </Card.Title>
+            <Card.Title>{`${car.manufacturerName} ${car.modelName}`}</Card.Title>
             <Card.Subtitle>{getCarDescription(car)}</Card.Subtitle>
             <Card.Text>
               This car is currently available and can be delivered as soon as
@@ -103,15 +102,24 @@ const Car = () => {
               <>
                 If you like this car, click the button and save it in your
                 collection of favourite items.
-                <Button className="ms-auto" onClick={handleSaveFavourite}>
+                <Button
+                  className="ms-auto"
+                  data-testid="saveButton"
+                  onClick={handleSaveFavourite}
+                >
                   Save
                 </Button>
               </>
             ) : (
               <>
                 Car is already in your
-                <Button variant="link" as={Link} to="/favourites">
-                  favourite list
+                <Button
+                  variant="link"
+                  data-testid="favouritesListButton"
+                  as={Link}
+                  to="/favourites"
+                >
+                  favourites list
                 </Button>
               </>
             )}

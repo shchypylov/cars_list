@@ -16,4 +16,7 @@ export const filtersReducer = (state, action) => {
   }
 };
 
-export const filtersContext = createContext();
+export const filtersContext = createContext({
+  state: {},
+  dispatch: () => 1,
+});

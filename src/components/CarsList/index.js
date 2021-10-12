@@ -93,7 +93,11 @@ const CarsList = () => {
 
       <ListGroup>
         {cars.map((c) => (
-          <ListGroup.Item key={c.stockNumber} className="d-flex car-item">
+          <ListGroup.Item
+            key={c.stockNumber}
+            className="d-flex car-item"
+            data-testid="carListItem"
+          >
             <img
               src={c.pictureUrl}
               alt="carImage"

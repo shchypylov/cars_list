@@ -63,10 +63,16 @@ const CarFilters = () => {
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="carColor">
         <Form.Label>Color</Form.Label>
-        <Form.Select name="color" aria-label="Default select example">
-          <option value="all">All car colors</option>
+        <Form.Select
+          name="color"
+          aria-label="Default select example"
+          data-testid="colorSelect"
+        >
+          <option value="all" data-testid="colorSelectOption">
+            All car colors
+          </option>
           {colors.map((color) => (
-            <option key={color} value={color}>
+            <option key={color} value={color} data-testid="colorSelectOption">
               {capitalize(color)}
             </option>
           ))}
@@ -75,12 +81,19 @@ const CarFilters = () => {
 
       <Form.Group className="mb-3" controlId="carManufacturer">
         <Form.Label>Manufacturer</Form.Label>
-        <Form.Select name="manufacturer" aria-label="Default select example">
-          <option value="all">All manufacturers</option>
+        <Form.Select
+          name="manufacturer"
+          aria-label="Manufacturer select"
+          data-testid="manufacturerSelect"
+        >
+          <option value="all" data-testid="manufacturerSelectOption">
+            All manufacturers
+          </option>
           {manufacturers.map((manufacturer) => (
             <option
               key={manufacturer.toLowerCase()}
               value={manufacturer.toLowerCase()}
+              data-testid="manufacturerSelectOption"
             >
               {manufacturer}
             </option>
