@@ -1,8 +1,17 @@
+nav.header {
+  background: #fff;
+  border-bottom: 1px solid #ededed;
+  height: 80px;
+}
+
 .header-logo {
   width: 138px;
 }
 
-.header-logo__image {
-  display: block;
-  width: 100%;
+.header .nav-item {
+  color: #4A4A4A !important;
+}
+
+.header .nav-item:hover {
+  text-decoration: none;
 }

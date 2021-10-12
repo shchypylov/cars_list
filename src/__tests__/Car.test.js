@@ -44,15 +44,15 @@ jest.mock("react-router-dom", () => ({
 }));
 
 test("Component should render with spinner", () => {
-  render(
+  const { getByTestId } = render(
     <BrowserRouter>
       <Car />
     </BrowserRouter>
   );
 
-  const spinner = screen.getByText("Loading...");
+  const loader = getByTestId("loader");
 
-  expect(spinner).toBeInTheDocument();
+  expect(loader).toBeInTheDocument();
 });
 
 test("Car data should be shown", async () => {

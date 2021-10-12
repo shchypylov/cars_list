@@ -50,7 +50,7 @@ const Favourites = () => {
 
   if (carsList.length === 0) {
     return (
-      <Alert variant="warning">
+      <Alert variant="warning" className="m-4">
         No favourite cars yet. Add some on{" "}
         <Alert.Link as={Link} to="/">
           home page!
@@ -60,16 +60,16 @@ const Favourites = () => {
   }
 
   return (
-    <ListGroup className="favourites mx-auto">
+    <ListGroup className="favourites mx-auto mt-5 p-3">
       {carsList.map((car) => (
         <ListGroup.Item
-          className="d-flex align-items-center"
+          className="favourites__item d-flex align-items-center p-3"
           key={car.stockNumber}
           onClick={handleNavigation(car.stockNumber)}
         >
-          <Link to={`/cars/${car.stockNumber}`}>
+          <span>
             {car.manufacturerName} {car.modelName} - {getCarDescription(car)}
-          </Link>
+          </span>
           <Button
             className="ms-auto"
             variant="danger"

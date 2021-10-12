@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Spinner } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 
+import Loader from "../Loader";
 import {
   fetchData,
   getCarDescription,
@@ -11,6 +12,16 @@ import {
 } from "../../utils";
 
 import "./style.css";
+
+const getBackgroundColor = (color) => {
+  switch (color) {
+    case "black":
+      // black svg is not visible on black background :)
+      return "#424242";
+    default:
+      return color;
+  }
+};
 
 const Car = () => {
   const { id } = useParams();
@@ -24,16 +35,14 @@ const Car = () => {
       setIsLoading(true);
       try {
         const { car } = await fetchData({
-          url: `https://auto1-mock-server.herokuapp.com/api/cars/${id}`,
+          url: `/api/cars/${id}`,
         });
 
         setCar(car);
       } catch (e) {
         reportError(e);
       } finally {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 250);
+        setIsLoading(false);
       }
     };
 
@@ -48,7 +57,7 @@ const Car = () => {
     }
 
     fetchCar();
-  }, []);
+  }, [id]);
 
   const handleSaveFavourite = () => {
     try {
@@ -68,65 +77,72 @@ const Car = () => {
   };
 
   if (isLoading || !car) {
-    return (
-      <div className="d-flex pt-5 justify-content-center">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
-    <div className="vehicle">
-      <Card>
-        <Card.Img
-          variant="top"
-          src={car.pictureUrl}
-          className="vehicle__image m-auto"
-        />
-        <Card.Body className="d-flex px-5 m-auto vehicle__info">
-          <div className="pe-4">
-            <Card.Title>{`${car.manufacturerName} ${car.modelName}`}</Card.Title>
-            <Card.Subtitle>{getCarDescription(car)}</Card.Subtitle>
-            <Card.Text>
-              This car is currently available and can be delivered as soon as
-              tomorrow morning. Please be aware that delivery times shown in
-              this page are not definitive and may change due to bad weather
-              conditions.
-            </Card.Text>
-          </div>
+    <Card className="vehicle">
+      <div
+        style={{ backgroundColor: getBackgroundColor(car.color) }}
+        className="vehicle__image d-flex align-items-center justify-content-center mb-2"
+      >
+        <Card.Img variant="top" src={car.pictureUrl} />
+      </div>
+      <Card.Body className="d-flex px-3 m-auto vehicle__info">
+        <Container className="mt-5">
+          <Row>
+            <Col md={7} className="mb-4">
+              <div className="pe-4">
+                <Card.Title className="vehicle__info-title fw-bold mb-4">{`${car.manufacturerName} ${car.modelName}`}</Card.Title>
+                <Card.Subtitle className="vehicle__info-subtitle mb-4">
+                  {getCarDescription(car)}
+                </Card.Subtitle>
+                <Card.Text className="vehicle__info-text">
+                  This car is currently available and can be delivered as soon
+                  as tomorrow morning. Please be aware that delivery times shown
+                  in this page are not definitive and may change due to bad
+                  weather conditions.
+                </Card.Text>
+              </div>
+            </Col>
+            <Col>
+              <div className="d-flex flex-column favourites align-self-start px-3 py-4">
+                {!isCarFavourite ? (
+                  <>
+                    <p>
+                      If you like this car, click the button and save it in your
+                      collection of favourite items.
+                    </p>
 
-          <div className="d-flex flex-column">
-            {!isCarFavourite ? (
-              <>
-                If you like this car, click the button and save it in your
-                collection of favourite items.
-                <Button
-                  className="ms-auto"
-                  data-testid="saveButton"
-                  onClick={handleSaveFavourite}
-                >
-                  Save
-                </Button>
-              </>
-            ) : (
-              <>
-                Car is already in your
-                <Button
-                  variant="link"
-                  data-testid="favouritesListButton"
-                  as={Link}
-                  to="/favourites"
-                >
-                  favourites list
-                </Button>
-              </>
-            )}
-          </div>
-        </Card.Body>
-      </Card>
-    </div>
+                    <Button
+                      className="ms-auto"
+                      data-testid="saveButton"
+                      onClick={handleSaveFavourite}
+                    >
+                      Save
+                    </Button>
+                  </>
+                ) : (
+                  <div className="d-flex">
+                    <p className="mb-0">
+                      Car is already in your{" "}
+                      <Link
+                        data-testid="favouritesListButton"
+                        className="fw-bold"
+                        as={Link}
+                        to="/favourites"
+                      >
+                        favourites list!
+                      </Link>
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </Card.Body>
+    </Card>
   );
 };
 

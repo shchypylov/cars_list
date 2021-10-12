@@ -1,4 +1,17 @@
 .favourites {
   max-width: 800px;
   width: 100%;
+  border: none;
+}
+
+.favourites .favourites__item {
+  border-width: 1px !important;
+}
+
+.favourites__item:hover {
+  cursor: pointer;
+}
+
+.favourites__item:not(:last-of-type) {
+  margin-bottom: 1rem;
 }

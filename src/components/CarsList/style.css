@@ -1,10 +1,31 @@
+.list__title {
+  font-size: 1.5rem;
+}
+
+.list__subtitle {
+  font-size: 1.5rem;
+}
+
+.car-item {
+  border-width: 1px !important;
+}
+
+.car-item:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+
 .car-item__image {
+  min-width: 100px;
+}
+
+.car-item__image img {
   display: block;
-  width: 100px;
+  width: 50px;
+  height: 50px;
 }
 
 .car-item__title {
-  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .car-item__info {

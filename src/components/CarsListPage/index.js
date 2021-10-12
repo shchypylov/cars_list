@@ -1,8 +1,8 @@
 import { useReducer } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
-import CarFilters from "../../components/CarFilters";
-import CarsList from "../../components/CarsList";
+import CarFilters from "../CarFilters";
+import CarsList from "../CarsList";
 import {
   filtersContext,
   filtersReducer,
@@ -21,9 +21,9 @@ const Home = () => {
 
   return (
     <filtersContext.Provider value={contextValue}>
-      <Container>
+      <Container className="mt-5">
         <Row>
-          <Col xs={3}>
+          <Col md={4} className="mb-4">
             <CarFilters />
           </Col>
           <Col>

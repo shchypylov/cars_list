@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, ListGroup, Spinner } from "react-bootstrap";
+import { Button, ButtonGroup, ListGroup } from "react-bootstrap";
 
+import Loader from "../Loader";
 import { fetchData, getCarDescription, reportError } from "../../utils";
 import { filtersContext } from "../../store";
 
@@ -13,6 +14,8 @@ const NAVIGATION = {
   FIRST: "first",
   LAST: "last",
 };
+
+const CARS_FETCH_AMOUNT = 10;
 
 const CarsList = () => {
   const [cars, setCars] = useState([]);
@@ -34,7 +37,7 @@ const CarsList = () => {
         queryString = `${queryString}&manufacturer=${state.manufacturer}`;
       }
       const { totalCarsCount, totalPageCount, cars } = await fetchData({
-        url: "https://auto1-mock-server.herokuapp.com/api/cars",
+        url: "/api/cars",
         params: queryString,
       });
 
@@ -47,9 +50,7 @@ const CarsList = () => {
     } catch (e) {
       reportError(e);
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 250);
+      setIsLoading(false);
     }
   };
 
@@ -72,39 +73,38 @@ const CarsList = () => {
         setPage(1);
         break;
       default:
-        setIsLoading(false);
+        return;
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="d-flex pt-5 justify-content-center">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    );
+  if (isLoading || !cars) {
+    return <Loader />;
   }
 
-  return (
-    <div>
-      <h1>Available cars</h1>
-      <h3>Showing 10 of {carsMeta.totalCarsCount} results</h3>
+  const showingAmount =
+    cars.length === CARS_FETCH_AMOUNT
+      ? cars.length * page
+      : CARS_FETCH_AMOUNT * (page - 1) + cars.length;
 
-      <ListGroup>
+  return (
+    <div className="list">
+      <h1 className="list__title fw-bold mb-2">Available cars</h1>
+      <h2 className="list__subtitle mb-4">
+        Showing {showingAmount} of {carsMeta.totalCarsCount} results
+      </h2>
+
+      <ListGroup className="mb-3">
         {cars.map((c) => (
           <ListGroup.Item
             key={c.stockNumber}
             className="d-flex car-item"
             data-testid="carListItem"
           >
-            <img
-              src={c.pictureUrl}
-              alt="carImage"
-              className="car-item__image me-3"
-            />
+            <div className="car-item__image d-flex align-items-center justify-content-center me-3">
+              <img src={c.pictureUrl} alt="carImage" />
+            </div>
             <div className="d-flex car-item__info flex-column">
-              <p className="car-item__title mb-1">
+              <p className="car-item__title fw-bold mb-1">
                 <strong>
                   {c.manufacturerName} {c.modelName}
                 </strong>
@@ -114,7 +114,7 @@ const CarsList = () => {
                 as={Link}
                 to={`/cars/${c.stockNumber}`}
                 variant="link"
-                className="me-auto"
+                className="me-auto ps-0"
               >
                 View details
               </Button>
@@ -124,7 +124,7 @@ const CarsList = () => {
       </ListGroup>
 
       {carsMeta.totalPageCount > 1 ? (
-        <nav className="d-flex align-items-center justify-content-center">
+        <nav className="d-flex align-items-center justify-content-center mb-3">
           {page > 1 ? (
             <ButtonGroup aria-label="Left pagination">
               <Button
@@ -141,9 +141,9 @@ const CarsList = () => {
               </Button>
             </ButtonGroup>
           ) : null}
-          <div>
+          <span>
             Page {page} of {carsMeta.totalPageCount}
-          </div>
+          </span>
           <ButtonGroup aria-label="Right pagination">
             <Button variant="link" onClick={handleNavigation(NAVIGATION.NEXT)}>
               Next

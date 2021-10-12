@@ -51,16 +51,16 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-test("Component should render with spinner", () => {
-  render(
+test("Component should render with loader", () => {
+  const { getByTestId } = render(
     <BrowserRouter>
       <CarsList />
     </BrowserRouter>
   );
 
-  const spinner = screen.getByText("Loading...");
+  const loader = getByTestId("loader");
 
-  expect(spinner).toBeInTheDocument();
+  expect(loader).toBeInTheDocument();
 });
 
 test("Cars data should be shown after fetch", async () => {

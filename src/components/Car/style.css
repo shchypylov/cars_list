@@ -1,8 +1,40 @@
-.vehicle .vehicle__image {
+div.vehicle {
+  border: none;
+}
+
+.vehicle__info {
+  max-width: 800px;
+}
+
+.vehicle__image {
+  height: 350px;
+  filter: brightness(0.8)
+}
+
+.vehicle__image img {
   width: 100px;
   height: 100px;
 }
 
-.vehicle .vehicle__info {
-  max-width: 800px;
+.vehicle .vehicle__info-title {
+  font-size: 2rem;
+}
+
+.vehicle .vehicle__info-subtitle {
+  font-size: 1.2rem;
+}
+
+.vehicle .favourites {
+  border: 1px solid #ededed;
+}
+
+@media screen and (max-width: 800px) {
+  .vehicle__image {
+    height: 100px;
+  }
+
+  .vehicle__image img {
+    width: 50px;
+    height: 50px;
+  }
 }

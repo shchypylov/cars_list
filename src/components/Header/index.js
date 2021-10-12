@@ -1,13 +1,13 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/img/logo.png";
+import logo from "../../img/logo.png";
 
 import "./style.css";
 
 const Header = () => {
   return (
-    <Navbar bg="light" expand="lg" className="header mb-5">
+    <Navbar className="header p-md-4 p-sm-1">
       <Container>
         <Navbar.Brand as={Link} to="/" className="header-logo">
           <img className="header-logo__image" src={logo} alt="logo" />
@@ -15,14 +15,11 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
           <Nav>
-            <Nav.Link as={Link} to="/purchase">
-              Purchase
+            <Nav.Link className="nav-item" as={Link} to="/">
+              Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/orders">
-              My Orders
-            </Nav.Link>
-            <Nav.Link as={Link} to="/sell">
-              Sell
+            <Nav.Link className="nav-item" as={Link} to="/favourites">
+              Favourites
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

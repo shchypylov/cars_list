@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { capitalize, fetchData, reportError } from "../../utils";
 import { filtersContext } from "../../store";
 
+import "./style.css";
+
 const CarFilters = () => {
   const [colors, setColors] = useState([]);
   const [manufacturers, setManufacturers] = useState([]);
@@ -30,7 +32,7 @@ const CarFilters = () => {
     const getColors = async () => {
       try {
         const { colors } = await fetchData({
-          url: "https://auto1-mock-server.herokuapp.com/api/colors",
+          url: `/api/colors`,
         });
 
         setColors(colors);
@@ -39,14 +41,10 @@ const CarFilters = () => {
       }
     };
 
-    getColors();
-  }, []);
-
-  useEffect(() => {
     const getManufacturers = async () => {
       try {
         const { manufacturers } = await fetchData({
-          url: "https://auto1-mock-server.herokuapp.com/api/manufacturers",
+          url: "/api/manufacturers",
         });
         const manufacturersNames = manufacturers.map((m) => m.name);
 
@@ -56,12 +54,13 @@ const CarFilters = () => {
       }
     };
 
+    getColors();
     getManufacturers();
   }, []);
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="carColor">
+    <Form className="d-flex flex-column filters p-4" onSubmit={handleSubmit}>
+      <Form.Group className="mb-2" controlId="carColor">
         <Form.Label>Color</Form.Label>
         <Form.Select
           name="color"
@@ -79,7 +78,7 @@ const CarFilters = () => {
         </Form.Select>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="carManufacturer">
+      <Form.Group className="mb-4" controlId="carManufacturer">
         <Form.Label>Manufacturer</Form.Label>
         <Form.Select
           name="manufacturer"
@@ -100,7 +99,7 @@ const CarFilters = () => {
           ))}
         </Form.Select>
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button variant="primary" className="ms-auto" type="submit">
         Filter
       </Button>
     </Form>

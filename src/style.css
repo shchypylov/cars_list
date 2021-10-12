@@ -3,3 +3,60 @@
     "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+.btn-link, a {
+  color: #EA7F28;
+  text-decoration: none;
+}
+
+.btn-link:hover, a:hover {
+  color: #EA7F28;
+  text-decoration: underline;
+}
+
+.btn-primary {
+  background: #EA7F28;
+  border-color: #EA7F28;
+  width: 128px;
+  height: 32px;
+  border-radius: 2px;
+  padding: .188rem .75rem;
+}
+
+.btn-primary:hover {
+  background: #EA7F28;
+  border-color: #EA7F28;
+}
+
+.btn-primary:focus {
+  background: #D37324;
+  border-color: #EA7F28;
+  box-shadow: none;
+  outline: none;
+}
+
+h1, h2, p, div {
+  color: #4A4A4A;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+@keyframes blink {
+  from,
+  to {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.blinking {
+  animation: 1.5s blink ease infinite;
+}
+
+

@@ -1,4 +1,14 @@
+.no-match {
+  padding-top: 8rem !important;
+}
+
 .no-match__logo {
   width: 138px;
   display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .no-match {
+    padding-top: 2rem !important;
+  }
 }
