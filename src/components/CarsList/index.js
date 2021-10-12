@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, ButtonGroup, ListGroup, Spinner } from "react-bootstrap";
 
-import { getCarDescription } from "../../utils";
+import { fetchData, getCarDescription, reportError } from "../../utils";
+import { filtersContext } from "../../store";
 
 import "./style.css";
-import { Link } from "react-router-dom";
 
 const NAVIGATION = {
   PREVIOUS: "previous",
@@ -18,14 +19,24 @@ const CarsList = () => {
   const [carsMeta, setCarsMeta] = useState({});
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const { state } = useContext(filtersContext);
 
-  const fetchData = async (page) => {
+  const fetchCars = async (page) => {
     setIsLoading(true);
 
     try {
-      const { totalCarsCount, totalPageCount, cars } = await fetch(
-        `https://auto1-mock-server.herokuapp.com/api/cars?sort=asc&page=${page}`
-      ).then((data) => data.json());
+      let queryString = `sort=asc&page=${page}`;
+
+      if (!!state.color) {
+        queryString = `${queryString}&color=${state.color}`;
+      }
+      if (!!state.manufacturer) {
+        queryString = `${queryString}&manufacturer=${state.manufacturer}`;
+      }
+      const { totalCarsCount, totalPageCount, cars } = await fetchData({
+        url: "https://auto1-mock-server.herokuapp.com/api/cars",
+        params: queryString,
+      });
 
       setCars(cars);
       setCarsMeta({
@@ -34,31 +45,34 @@ const CarsList = () => {
       });
       setPage(page);
     } catch (e) {
-      console.error(e);
+      reportError(e);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 250);
     }
   };
 
   useEffect(() => {
-    fetchData(page);
-  }, []);
+    fetchCars(page);
+  }, [state.color, state.manufacturer, page]);
 
   const handleNavigation = (step) => async () => {
     switch (step) {
       case NAVIGATION.NEXT:
-        const nextPage = page + 1;
-        return fetchData(nextPage);
+        setPage((page) => page + 1);
+        break;
       case NAVIGATION.PREVIOUS:
-        const previousPage = page - 1;
-        return fetchData(previousPage);
+        setPage((page) => page - 1);
+        break;
       case NAVIGATION.LAST:
-        return fetchData(carsMeta.totalPageCount);
+        setPage(carsMeta.totalPageCount);
+        break;
       case NAVIGATION.FIRST:
-        return fetchData(1);
+        setPage(1);
+        break;
       default:
         setIsLoading(false);
-        return Promise.resolve();
     }
   };
 
@@ -87,7 +101,9 @@ const CarsList = () => {
             />
             <div className="d-flex car-item__info flex-column">
               <p className="car-item__title mb-1">
-                <strong>{c.manufacturerName}</strong>
+                <strong>
+                  {c.manufacturerName} {c.modelName}
+                </strong>
               </p>
               <p className="car-item__subtitle mb-1">{getCarDescription(c)}</p>
               <Button

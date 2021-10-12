@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Button, Card, Spinner } from "react-bootstrap";
 
 import {
+  fetchData,
   getCarDescription,
   getLocalStorageCars,
   reportError,
@@ -18,18 +19,20 @@ const Car = () => {
   const [car, setCar] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCar = async () => {
       setIsLoading(true);
       try {
-        const { car } = await fetch(
-          `https://auto1-mock-server.herokuapp.com/api/cars/${id}`
-        ).then((data) => data.json());
+        const { car } = await fetchData({
+          url: `https://auto1-mock-server.herokuapp.com/api/cars/${id}`,
+        });
 
         setCar(car);
       } catch (e) {
         reportError(e);
       } finally {
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 250);
       }
     };
 
@@ -43,7 +46,7 @@ const Car = () => {
       reportError(e);
     }
 
-    fetchData();
+    fetchCar();
   }, []);
 
   const handleSaveFavourite = () => {

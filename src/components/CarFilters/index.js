@@ -1,32 +1,42 @@
 import { Button, Form } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { capitalize } from "../../utils";
+import { useContext, useEffect, useState } from "react";
+
+import { capitalize, fetchData, reportError } from "../../utils";
+import { filtersContext } from "../../store";
 
 const CarFilters = () => {
   const [colors, setColors] = useState([]);
   const [manufacturers, setManufacturers] = useState([]);
+  const { dispatch } = useContext(filtersContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
+    const color = data.get("color");
+    const manufacturer = data.get("manufacturer");
 
-    console.log(data.get("color"));
-    console.log(data.get("manufacturer"));
+    dispatch({
+      type: "SET_COLOR",
+      payload: color === "all" ? null : color,
+    });
+
+    dispatch({
+      type: "SET_MANUFACTURER",
+      payload: manufacturer === "all" ? null : manufacturer,
+    });
   };
 
   useEffect(() => {
     const getColors = async () => {
-      const { colors } = await fetch(
-        "https://auto1-mock-server.herokuapp.com/api/colors",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((data) => data.json());
+      try {
+        const { colors } = await fetchData({
+          url: "https://auto1-mock-server.herokuapp.com/api/colors",
+        });
 
-      setColors(colors);
+        setColors(colors);
+      } catch (e) {
+        reportError(e);
+      }
     };
 
     getColors();
@@ -34,18 +44,16 @@ const CarFilters = () => {
 
   useEffect(() => {
     const getManufacturers = async () => {
-      const { manufacturers } = await fetch(
-        "https://auto1-mock-server.herokuapp.com/api/manufacturers",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((data) => data.json());
-      const manufacturersNames = manufacturers.map((m) => m.name);
+      try {
+        const { manufacturers } = await fetchData({
+          url: "https://auto1-mock-server.herokuapp.com/api/manufacturers",
+        });
+        const manufacturersNames = manufacturers.map((m) => m.name);
 
-      setManufacturers(manufacturersNames);
+        setManufacturers(manufacturersNames);
+      } catch (e) {
+        reportError(e);
+      }
     };
 
     getManufacturers();

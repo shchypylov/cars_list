@@ -17,3 +17,14 @@ export const getLocalStorageCars = () => {
 export const setLocalStorageCars = (cars) => {
   localStorage.setItem("favouriteCars", JSON.stringify(cars));
 };
+
+export const fetchData = ({ url, params }) => {
+  const queryParams = params ? `?${params}` : "";
+
+  return fetch(`${url}${queryParams}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data) => data.json());
+};
