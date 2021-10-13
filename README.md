@@ -2,7 +2,7 @@
 
 ## Features
 * built with CRA
-* tested with (with [react-testing-library](https://testing-library.com/docs/react-testing-library/intro))
+* tested with [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 * localStorage is used for storing favourite cars
 * [React Bootstrap](https://react-bootstrap.github.io/) is used for UI components
 
